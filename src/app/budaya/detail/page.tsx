@@ -25,7 +25,6 @@ export default function BudayaDetailPage() {
       }
 
       try {
-        // Asumsi HomeService dan Ensiklopedia sudah di-import dengan benar
         const data = await HomeService.getEnsiklopediaById(id);
         setCulture(data);
       } catch (err) {
@@ -65,16 +64,16 @@ export default function BudayaDetailPage() {
 
   if (loading) {
     return (
-      // 🚀 SOLUSI 1: Tambahkan flex flex-col untuk layout full-height
       <div className="min-h-screen flex flex-col bg-gray-50 relative">
         <div className="absolute inset-0 z-0">
           <BackgroundDecorations />
         </div>
-        <div className="relative z-10">
+        {/* Navbar sudah z-50 di dalamnya, cukup z-10 di sini */}
+        <div className="relative z-10"> 
           <Navbar />
         </div>
-        {/* 🚀 SOLUSI 1: Gunakan <main> dengan flex-grow agar konten mengisi ruang dan mendorong footer */}
-        <main className="flex-grow max-w-6xl mx-auto pt-20 px-4 pb-20 flex items-center justify-center w-full">
+        {/* Hapus z-10 dari main di loading */}
+        <main className="flex-grow max-w-6xl mx-auto pt-20 px-4 pb-20 flex items-center justify-center w-full relative">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-800 mx-auto"></div>
             <p className="mt-4 text-gray-600">Memuat detail budaya...</p>
@@ -89,7 +88,6 @@ export default function BudayaDetailPage() {
 
   if (error || !culture) {
     return (
-      // 🚀 SOLUSI 1: Tambahkan flex flex-col untuk layout full-height
       <div className="min-h-screen flex flex-col bg-gray-50 relative">
         <div className="absolute inset-0 z-0">
           <BackgroundDecorations />
@@ -97,8 +95,8 @@ export default function BudayaDetailPage() {
         <div className="relative z-10">
           <Navbar />
         </div>
-        {/* 🚀 SOLUSI 1: Gunakan <main> dengan flex-grow */}
-        <main className="flex-grow max-w-6xl mx-auto pt-20 px-4 pb-20 w-full">
+        {/* Hapus z-10 dari main di error */}
+        <main className="flex-grow max-w-6xl mx-auto pt-20 px-4 pb-20 w-full relative">
           <div className="text-center text-red-600 py-12">
             <p className="text-lg">{error || "Budaya tidak ditemukan"}</p>
             <Link
@@ -117,22 +115,23 @@ export default function BudayaDetailPage() {
   }
 
   return (
-    // Struktur utama sudah bagus (min-h-screen flex flex-col)
     <div className="min-h-screen flex flex-col bg-gray-50 relative">
-      {/* ✅ Dekorasi DITARUH DI BAWAH SEMUA ELEMEN UI */}
+      
       <div className="absolute inset-0 z-0">
         <BackgroundDecorations />
       </div>
 
-      {/* Navbar */}
+      {/* Navbar (z-50 di dalam komponen Navbar) */}
       <div className="relative z-10">
         <Navbar />
       </div>
 
-      {/* Main Content - Mengisi ruang yang tersisa (flex-grow sudah ada) */}
-      <main className="flex-grow py-20 px-4 relative z-10">
+      {/* Main Content */}
+      {/* 🚀 PERBAIKAN: HAPUS 'z-10' dari <main> agar tidak menimpa menu Navbar (z-50) */}
+      <main className="flex-grow py-20 px-4 relative"> 
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-5">
-          {/* LEFT CONTENT - bg-white sudah ada di sini, seharusnya tidak transparan */}
+
+          {/* LEFT CONTENT. Tetap punya bg-white. */}
           <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-lg space-y-4">
             {culture.photo ? (
               <img
@@ -155,9 +154,6 @@ export default function BudayaDetailPage() {
               {culture.name}
             </h2>
 
-            {/* Jika description adalah HTML, gunakan:
-            <div className="text-gray-700 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: culture.description || '' }} />
-            Jika hanya teks biasa: */}
             <p className="text-gray-700 text-sm leading-relaxed">
               {culture.description}
             </p>
@@ -167,21 +163,23 @@ export default function BudayaDetailPage() {
                 <h3 className="text-red-800 font-semibold text-lg">Audio</h3>
                 <audio
                   controls
-                  src={getAudioUrl(culture.audio)!} // Gunakan non-null assertion karena kita sudah pastikan nilainya
+                  src={getAudioUrl(culture.audio)!}
                   className="w-full h-12"
                 />
               </>
             )}
 
-            <Link href="/">
-              <button className="mt-4 px-6 py-2 bg-red-800 text-white rounded-lg hover:bg-red-700 transition-colors">
-                ← Kembali
-              </button>
-            </Link>
+            {/* Desktop: Tombol Kembali di sini */}
+            <div className="hidden lg:block">
+              <Link href="/">
+                <button className="mt-4 px-6 py-2 bg-red-800 text-white rounded-lg hover:bg-red-700 transition-colors">
+                  ← Kembali
+                </button>
+              </Link>
+            </div>
           </div>
 
-          {/* RIGHT SIDEBAR */}
-          {/* 🚀 SOLUSI 2: Hapus kelas lebar absolut, biarkan grid yang mengaturnya */}
+          {/* RIGHT SIDEBAR. Tetap punya bg-white. */}
           <div className="space-y-6">
             <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-200 space-y-4">
               <h2 className="text-red-800 text-lg font-bold">Info Singkat</h2>
@@ -211,10 +209,19 @@ export default function BudayaDetailPage() {
               </div>
             </div>
           </div>
+
+          {/* MOBILE ONLY: Tombol Kembali di bawah Info Singkat */}
+          <div className="lg:hidden w-full mt-6">
+            <Link href="/">
+              <button className="w-full px-6 py-2 bg-red-800 text-white rounded-lg hover:bg-red-700 transition-colors">
+                ← Kembali
+              </button>
+            </Link>
+          </div>
         </div>
       </main>
 
-      {/* Footer - Selalu di bawah */}
+      {/* Footer */}
       <footer className="relative z-10">
         <Footer />
       </footer>

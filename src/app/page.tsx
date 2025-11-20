@@ -8,6 +8,7 @@ import Footer from '../components/layout/Footer';
 import { useState, useEffect } from 'react';
 import HomeService from '../services/HomeService';
 import { Ensiklopedia } from '../models/Ensiklopedia';
+import api from '../data/api';
 import BackgroundDecorations from '../components/home/BackgroundDecorations';
 
 export default function HomePage() {
@@ -37,20 +38,28 @@ export default function HomePage() {
     fetchCultures();
   }, []);
 
-  const handleSearch = (query: string) => {
+  const handleSearch = async (query: string) => {
     setSearchQuery(query);
-    if (query.trim() === '') {
-      // Kembalikan ke 6 data acak
-      const randomData = [...allCultures].sort(() => 0.5 - Math.random()).slice(0, 6);
+    if (query.trim() === "") {
+      // Kembalikan ke 6 data acak ketika search kosong
+      const randomData = [...allCultures]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 6);
       setCultures(randomData);
     } else {
-      const filtered = allCultures.filter(
-        (culture) =>
-          culture.name.toLowerCase().includes(query.toLowerCase()) ||
-          culture.category.toLowerCase().includes(query.toLowerCase()) ||
-          culture.description.toLowerCase().includes(query.toLowerCase())
-      );
-      setCultures(filtered);
+      // Panggil API dengan parameter pencarian berdasarkan name
+      try {
+        const response = await api.get(`/ensiklopedia?name=${encodeURIComponent(query)}`);
+        setCultures(response.data.data);
+      } catch (error) {
+        console.error("Error searching cultures:", error);
+        // Jika API search gagal, gunakan filter lokal sebagai fallback
+        const filtered = allCultures.filter(
+          (culture) =>
+            culture.name.toLowerCase().includes(query.toLowerCase())
+        );
+        setCultures(filtered);
+      }
     }
   };
 
