@@ -1,5 +1,6 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
       bodySizeLimit: '10mb',
@@ -24,6 +25,28 @@ const nextConfig = {
         pathname: '/api/uploads/**',
       },
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: '/manifest.json',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/manifest+json',
+          },
+        ],
+      },
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+        ],
+      },
+    ];
   },
 };
 

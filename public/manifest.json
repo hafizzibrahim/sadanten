@@ -1,0 +1,23 @@
+{
+  "name": "Sadanten - Ensiklopedia Budaya Banten",
+  "short_name": "Sadanten",
+  "description": "Website eksplorasi warisan kebudayaan Banten",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F5F5",
+  "theme_color": "#DC2626",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.svg",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/android-chrome-512x512.svg",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
