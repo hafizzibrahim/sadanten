@@ -14,7 +14,7 @@ const linkClass = (name: string): string =>
     }`;
 
   return (
-    <nav className="bg-white shadow-md fixed w-full top-0 z-50 rounded-b-2xl">
+    <nav className="bg-white shadow-lg fixed w-full top-0 z-50 rounded-b-2xl">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
 

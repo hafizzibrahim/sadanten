@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import LogoutButton from "../../components/admin/LogoutButton";
 
 export default function AdminLayout({
   children,
@@ -30,17 +31,13 @@ export default function AdminLayout({
       <aside className="w-64 bg-white shadow-lg flex flex-col border-r border-gray-200">
         <div className="p-4 border-b border-gray-200 flex flex-col items-center">
           <Link href="/admin" className="flex flex-col items-center">
-            {/* Ganti teks dengan SVG logo */}
             <div className="flex items-center justify-center">
               <img
-                src="/sadanten_logo.svg" // Ganti dengan path logo kamu
+                src="/sadanten_logo.svg"
                 alt="Sadanten Logo"
-                className="h-40 w-auto" // Ukuran logo disesuaikan
+                className="h-40 w-auto"
               />
             </div>
-            {/* <span className="block text-xl text-gray-500 mt-2">
-              Admin Panel
-            </span> */}
           </Link>
         </div>
 
@@ -48,6 +45,11 @@ export default function AdminLayout({
           {navItem("/admin", "Dashboard")}
           {navItem("/admin/data", "Manajemen Data")}
         </nav>
+
+        {/* Logout Button */}
+        <div className="mt-auto px-4 pb-4">
+          <LogoutButton />
+        </div>
       </aside>
 
       {/* Main Content */}

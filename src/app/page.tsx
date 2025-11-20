@@ -5,23 +5,48 @@ import Hero from '../components/home/Hero';
 import SearchBar from '../components/home/SearchBar';
 import CultureCard from '../components/common/CultureCard';
 import Footer from '../components/layout/Footer';
-import { useState } from 'react';
-import cultureData from '../data/cultureData';
-
+import { useState, useEffect } from 'react';
+import HomeService from '../services/HomeService';
+import { Ensiklopedia } from '../models/Ensiklopedia';
 import BackgroundDecorations from '../components/home/BackgroundDecorations';
 
 export default function HomePage() {
-  const [cultures, setCultures] = useState(cultureData);
+  const [cultures, setCultures] = useState<Ensiklopedia[]>([]);
+  const [allCultures, setAllCultures] = useState<Ensiklopedia[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCultures = async () => {
+      try {
+        const allData = await HomeService.getAllEnsiklopedia();
+        setAllCultures(allData);
+
+        // Ambil 6 data acak untuk ditampilkan di home
+        const randomData = await HomeService.getRandomEnsiklopedia(6);
+        setCultures(randomData);
+      } catch (error) {
+        console.error("Error fetching cultures:", error);
+        // Jika gagal, bisa tampilkan pesan error atau data kosong
+        setCultures([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCultures();
+  }, []);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     if (query.trim() === '') {
-      setCultures(cultureData);
+      // Kembalikan ke 6 data acak
+      const randomData = [...allCultures].sort(() => 0.5 - Math.random()).slice(0, 6);
+      setCultures(randomData);
     } else {
-      const filtered = cultureData.filter(
+      const filtered = allCultures.filter(
         (culture) =>
-          culture.title.toLowerCase().includes(query.toLowerCase()) ||
+          culture.name.toLowerCase().includes(query.toLowerCase()) ||
           culture.category.toLowerCase().includes(query.toLowerCase()) ||
           culture.description.toLowerCase().includes(query.toLowerCase())
       );
@@ -29,13 +54,28 @@ export default function HomePage() {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center relative">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-800 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Memuat budaya Banten...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 relative">
       <BackgroundDecorations />
-      
+
       <div className="relative z-10">
-        <Navbar />
-        <Hero />
+  <div className="z-20 relative"> {/* ← Navbar bisa di sini atau di dalam komponen Navbar */}
+    <Navbar />
+  </div>
+  <div className="mt-[-60px] relative z-10">
+    <Hero />
+  </div>
         <SearchBar onSearch={handleSearch} />
 
         {/* Gallery Section */}
@@ -51,7 +91,7 @@ export default function HomePage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {cultures.map((culture) => (
-                <CultureCard key={culture.id} culture={{ ...culture, id: Number(culture.id) }} />
+                <CultureCard key={culture.id} culture={culture} />
               ))}
             </div>
           )}

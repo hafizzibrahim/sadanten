@@ -1,25 +1,50 @@
 import Link from 'next/link';
+import { Ensiklopedia } from '../../models/Ensiklopedia';
 
-interface Culture {
-  id: number;
-  title: string;
-  category: string;
-  description: string;
+interface CultureCardProps {
+  culture: Ensiklopedia;
 }
 
-const CultureCard = ({ culture }: { culture: Culture }) => {
+const CultureCard = ({ culture }: CultureCardProps) => {
+  // Fungsi untuk mendapatkan URL foto yang benar
+  const getPhotoUrl = (photo: string) => {
+    if (!photo) return "/placeholder-image.jpg"; // fallback image
+
+    // Jika URL sudah lengkap, kembalikan langsung
+    if (photo.startsWith("http")) return photo;
+
+    // Jika URL adalah path relatif, tambahkan ke base URL
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://besadanten-production.up.railway.app/api";
+    return `${baseUrl}${photo.startsWith('/') ? photo : '/' + photo}`;
+  };
+
   return (
-    <Link href={`/budaya/detail`}>
+    <Link href={`/budaya/detail?id=${culture.id}`}>
       <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer">
         {/* Image */}
         <div className="relative h-48 bg-gradient-to-br from-red-900 to-red-700 overflow-hidden">
-          <div className="absolute inset-0 bg-red-900"></div>
+          {culture.photo ? (
+            <img
+              src={getPhotoUrl(culture.photo)}
+              alt={culture.name}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.onerror = null; // Hindari infinite loop jika fallback juga gagal
+                target.src = "/placeholder-image.jpg"; // fallback image
+              }}
+            />
+          ) : (
+            <div className="absolute inset-0 bg-red-900 flex items-center justify-center">
+              <span className="text-white text-lg font-medium">No Image</span>
+            </div>
+          )}
         </div>
 
         {/* Content */}
         <div className="p-6">
           <h3 className="text-xl font-bold text-gray-800 mb-1">
-            {culture.title}
+            {culture.name}
           </h3>
           <p className="text-sm text-red-700 font-medium mb-3">{culture.category}</p>
           <p className="text-gray-600 text-sm leading-relaxed line-clamp-4">
