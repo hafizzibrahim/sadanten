@@ -18,6 +18,10 @@ export const metadata: Metadata = {
   title: "Sadanten - Sarana Budaya Banten",
   description: "Website eksplorasi warisan kebudayaan Banten",
   manifest: "/manifest.json",
+  icons: {
+    icon: '/logo-sadanten.ico',
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 export default function RootLayout({
@@ -26,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="id">
       <head>
         {/* PWA Meta Tags */}
         <meta name="application-name" content="Sadanten" />
@@ -35,9 +39,6 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <link rel="icon" href="/ic_sadanten.svg" type="image/svg+xml" />
-        <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/ic_sadanten.svg" type="image/svg+xml" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#F5F5F5] relative overflow-x-hidden`}

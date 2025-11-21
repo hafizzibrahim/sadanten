@@ -9,15 +9,10 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/ic_sadanten.svg",
-      "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/ic_sadanten.svg",
+      "src": "/logo.png",
       "sizes": "512x512",
-      "type": "image/svg+xml"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
