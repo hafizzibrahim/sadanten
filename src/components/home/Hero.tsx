@@ -1,19 +1,22 @@
 "use client";
 
 import { useState, useEffect } from "react";
+// Import komponen Image dari Next.js
+import Image from "next/image"; 
 
+// Menggunakan path lokal dari folder public/
 const images = [
-  "https://i.ibb.co.com/CKcdnsD5/1571029828-Rampak-Bedug-thumb.jpg",
-  "https://i.ibb.co.com/Ng3BdFvG/juli2024-3.jpg",
-  "https://i.ibb.co.com/HpKYczH3/Screenshot-2025-02-26-112809.png",
-  "https://i.ibb.co.com/JRMw1sQD/1280px-Debus-The-Ancient-Martial-Art-and-Culture-of-Banten.jpg",
-  "https://i.ibb.co.com/RkD04krZ/124283092.jpg",
+  "/hero/hero1.jpg",
+  "/hero/hero2.jpeg",
+  "/hero/hero3.jpg",
+  "/hero/hero4.jpg",
+  "/hero/hero5.png",
 ];
 
 const Hero = () => {
   const [index, setIndex] = useState(0);
 
-  // Auto slide setiap 4 detik
+  // Auto slide setiap 4 detik (tetap sama)
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % images.length);
@@ -23,29 +26,38 @@ const Hero = () => {
 
   return (
     <div className="relative h-[450px] mt-16 overflow-hidden rounded-b-2xl">
+      
       {/* Slides */}
-      {images.map((img, i) => (
+      {images.map((imgSrc, i) => (
         <div
           key={i}
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out 
             ${i === index ? "opacity-100" : "opacity-0"}`}
-          style={{
-            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${img})`,
-            // Tetap menggunakan "cover" untuk mengisi penuh area
-            backgroundSize: "cover",
-            backgroundPosition: "center", 
-            backgroundRepeat: "no-repeat"
-          }}
-        ></div>
+        >
+          {/* 1. Komponen Image untuk gambar utama */}
+          <Image
+            src={imgSrc}
+            alt="Warisan Budaya Banten"
+            fill // Mengisi seluruh parent container
+            className="object-cover" // Mirip dengan background-size: cover
+            sizes="(max-width: 768px) 100vw, 100vw"
+            priority={i === 0} // Mempercepat loading gambar pertama
+          />
+          
+          {/* 2. Overlay gelap terpisah */}
+          <div className="absolute inset-0 bg-black/60 z-[1]"></div>
+        </div>
       ))}
-      {/* Content dan Dots tetap sama */}
+
+      {/* Content */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4 z-10">
-        <h1 className="text-5xl md:text-6xl font-bold mb-4">Selamat Datang</h1>
-        <p className="text-lg md:text-xl max-w-2xl">
+        <h1 className="text-5xl md:text-6xl font-bold mb-4 z-[2]">Selamat Datang</h1>
+        <p className="text-lg md:text-xl max-w-2xl z-[2]">
           Jelajahi Kekayaan dan Keunikan Warisan Budaya di Provinsi Banten
         </p>
       </div>
 
+      {/* Dots */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
         {images.map((_, i) => (
           <button
@@ -57,6 +69,7 @@ const Hero = () => {
           ></button>
         ))}
       </div>
+
     </div>
   );
 };
