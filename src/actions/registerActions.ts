@@ -28,7 +28,7 @@ export async function registerAction(username: string, email: string, password: 
 
       cookieStore.set("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // Non-secure di development
+        secure: process.env.NODE_ENV === "production", // Non-secure in development
         sameSite: "strict",
         path: "/",
       });

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { loginAction } from "../../actions/loginActions";
 import { registerAction } from "../../actions/registerActions";
 
@@ -16,6 +16,21 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Get redirect URL from query params
+  const redirect = searchParams.get('redirect');
+
+  // Handle redirect after successful login
+  useEffect(() => {
+    // Don't redirect if we're on register view
+    if (!isLogin) return;
+
+    // If there's an error, clear the redirect
+    if (error) {
+      router.replace('/login');
+    }
+  }, [error, isLogin, router]);
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
@@ -30,7 +45,9 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/admin");
+    // Redirect to admin or original requested page
+    const redirectTo = redirect && redirect !== '/login' ? redirect : "/admin";
+    router.push(redirectTo);
     setLoading(false);
   };
 

@@ -1,12 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
+  const pathname = usePathname();
   const [active, setActive] = useState("Home");
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State untuk hamburger
+
+  useEffect(() => {
+    // Update active state berdasarkan pathname
+    if (pathname === '/') {
+      setActive("Home");
+    } else if (pathname === '/about') {
+      setActive("About");
+    }
+  }, [pathname]);
 
   const linkClass = (name: string): string =>
     `cursor-pointer font-medium transition ${
@@ -29,7 +40,7 @@ const Navbar = () => {
   return (
     // <nav> adalah parent utama yang fixed dan w-full
     <nav className="bg-white shadow-lg fixed w-full top-0 z-50 rounded-b-2xl">
-      
+
       {/* Container utama untuk Logo dan Hamburger/Desktop Link. Ini yang punya padding. */}
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -87,7 +98,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      
+
       {/* 🚀 SOLUSI: Keluarkan Mobile Menu dari div padding utamanya. */}
       {/* Sekarang menu ini adalah child langsung dari <nav> (yang fixed dan w-full) */}
       {isMenuOpen && (

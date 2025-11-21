@@ -13,7 +13,7 @@ export async function loginAction(email: string, password: string) {
 
     cookieStore.set("token", token, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production", // Non-secure in development
       sameSite: "strict",
       path: "/",
     });
