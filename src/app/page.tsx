@@ -10,8 +10,6 @@ import CultureCard from "../components/common/CultureCard";
 
 import Footer from "../components/layout/Footer";
 
-import ParticipationFAB from "../components/common/ParticipationFAB";
-
 import { useState, useEffect } from "react";
 
 import HomeService from "../services/HomeService";

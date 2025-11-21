@@ -16,6 +16,8 @@ const Navbar = () => {
       setActive("Home");
     } else if (pathname === '/about') {
       setActive("About");
+    } else if (pathname === '/partisipasi') {
+      setActive("Partisipasi");
     }
   }, [pathname]);
 
@@ -75,6 +77,14 @@ const Navbar = () => {
             >
               About
             </Link>
+
+            <Link
+              href="/partisipasi"
+              onClick={() => handleLinkClick("Partisipasi")}
+              className={linkClass("Partisipasi")}
+            >
+              Partisipasi
+            </Link>
           </div>
 
           {/* HAMBURGER MENU - VISIBLE ON MOBILE */}
@@ -118,6 +128,14 @@ const Navbar = () => {
               className={`block px-3 py-2 rounded-md text-base font-medium ${linkClass("About")}`}
             >
               About
+            </Link>
+
+            <Link
+              href="/partisipasi"
+              onClick={() => handleLinkClick("Partisipasi")}
+              className={`block px-3 py-2 rounded-md text-base font-medium ${linkClass("Partisipasi")}`}
+            >
+              Partisipasi
             </Link>
           </div>
         </div>
