@@ -3,9 +3,11 @@
 import { useState, useEffect } from "react";
 
 const images = [
-  "https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=1200&h=450&fit=crop",
-  "https://images.unsplash.com/photo-1549887534-3db1bd59dcca?w=1200&h=450&fit=crop",
-  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&h=450&fit=crop"
+  "https://i.ibb.co.com/CKcdnsD5/1571029828-Rampak-Bedug-thumb.jpg",
+  "https://i.ibb.co.com/Ng3BdFvG/juli2024-3.jpg",
+  "https://i.ibb.co.com/HpKYczH3/Screenshot-2025-02-26-112809.png",
+  "https://i.ibb.co.com/JRMw1sQD/1280px-Debus-The-Ancient-Martial-Art-and-Culture-of-Banten.jpg",
+  "https://i.ibb.co.com/RkD04krZ/124283092.jpg",
 ];
 
 const Hero = () => {
@@ -21,7 +23,6 @@ const Hero = () => {
 
   return (
     <div className="relative h-[450px] mt-16 overflow-hidden rounded-b-2xl">
-
       {/* Slides */}
       {images.map((img, i) => (
         <div
@@ -30,13 +31,14 @@ const Hero = () => {
             ${i === index ? "opacity-100" : "opacity-0"}`}
           style={{
             backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${img})`,
+            // Tetap menggunakan "cover" untuk mengisi penuh area
             backgroundSize: "cover",
-            backgroundPosition: "center"
+            backgroundPosition: "center", 
+            backgroundRepeat: "no-repeat"
           }}
         ></div>
       ))}
-
-      {/* Content */}
+      {/* Content dan Dots tetap sama */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4 z-10">
         <h1 className="text-5xl md:text-6xl font-bold mb-4">Selamat Datang</h1>
         <p className="text-lg md:text-xl max-w-2xl">
@@ -44,7 +46,6 @@ const Hero = () => {
         </p>
       </div>
 
-      {/* Dots */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
         {images.map((_, i) => (
           <button
@@ -56,7 +57,6 @@ const Hero = () => {
           ></button>
         ))}
       </div>
-
     </div>
   );
 };

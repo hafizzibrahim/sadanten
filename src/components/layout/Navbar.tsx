@@ -38,7 +38,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link href="/" onClick={() => handleLinkClick("Home")}>
               <Image
-                src="/sadanten_logo.svg"
+                src="/ic_navbar.png"
                 alt="SadanTen Logo"
                 width={128}
                 height={80}

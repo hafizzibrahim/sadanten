@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sadanten — Ensiklopedia Budaya Banten",
+  title: "Sadanten - Sarana Budaya Banten",
   description: "Website eksplorasi warisan kebudayaan Banten",
   manifest: "/manifest.json",
 };
@@ -35,8 +35,9 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
+        <link rel="icon" href="/Logo.png" type="image/png" />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/android-chrome-192x192.svg" />
+        <link rel="apple-touch-icon" href="/Logo.png" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#F5F5F5] relative overflow-x-hidden`}
