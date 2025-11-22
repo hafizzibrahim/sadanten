@@ -12,11 +12,11 @@ const Navbar = () => {
 
   useEffect(() => {
     // Update active state berdasarkan pathname
-    if (pathname === '/') {
+    if (pathname === "/") {
       setActive("Home");
-    } else if (pathname === '/about') {
+    } else if (pathname === "/about") {
       setActive("About");
-    } else if (pathname === '/partisipasi') {
+    } else if (pathname === "/partisipasi") {
       setActive("Partisipasi");
     }
   }, [pathname]);
@@ -42,11 +42,9 @@ const Navbar = () => {
   return (
     // <nav> adalah parent utama yang fixed dan w-full
     <nav className="bg-white shadow-lg fixed w-full top-0 z-50 rounded-b-2xl">
-
       {/* Container utama untuk Logo dan Hamburger/Desktop Link. Ini yang punya padding. */}
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-
           {/* LEFT - LOGO */}
           <div className="flex items-center">
             <Link href="/" onClick={() => handleLinkClick("Home")}>
@@ -67,15 +65,7 @@ const Navbar = () => {
               onClick={() => handleLinkClick("Home")}
               className={linkClass("Home")}
             >
-              Home
-            </Link>
-
-            <Link
-              href="/about"
-              onClick={() => handleLinkClick("About")}
-              className={linkClass("About")}
-            >
-              About
+              Beranda
             </Link>
 
             <Link
@@ -83,7 +73,15 @@ const Navbar = () => {
               onClick={() => handleLinkClick("Partisipasi")}
               className={linkClass("Partisipasi")}
             >
-              Partisipasi
+              Partisipasi Kebudayaan
+            </Link>
+
+            <Link
+              href="/about"
+              onClick={() => handleLinkClick("About")}
+              className={linkClass("About")}
+            >
+              Tentang
             </Link>
           </div>
 
@@ -96,12 +94,32 @@ const Navbar = () => {
             >
               {/* Hamburger Icon */}
               {isMenuOpen ? (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               ) : (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 </svg>
               )}
             </button>
@@ -117,7 +135,9 @@ const Navbar = () => {
             <Link
               href="/"
               onClick={() => handleLinkClick("Home")}
-              className={`block px-3 py-2 rounded-md text-base font-medium ${linkClass("Home")}`}
+              className={`block px-3 py-2 rounded-md text-base font-medium ${linkClass(
+                "Home"
+              )}`}
             >
               Home
             </Link>
@@ -125,7 +145,9 @@ const Navbar = () => {
             <Link
               href="/about"
               onClick={() => handleLinkClick("About")}
-              className={`block px-3 py-2 rounded-md text-base font-medium ${linkClass("About")}`}
+              className={`block px-3 py-2 rounded-md text-base font-medium ${linkClass(
+                "About"
+              )}`}
             >
               About
             </Link>
@@ -133,7 +155,9 @@ const Navbar = () => {
             <Link
               href="/partisipasi"
               onClick={() => handleLinkClick("Partisipasi")}
-              className={`block px-3 py-2 rounded-md text-base font-medium ${linkClass("Partisipasi")}`}
+              className={`block px-3 py-2 rounded-md text-base font-medium ${linkClass(
+                "Partisipasi"
+              )}`}
             >
               Partisipasi
             </Link>

@@ -34,15 +34,20 @@ export default function AboutPage() {
                         transition-all duration-300 border border-neutral-200"
         >
           <h1 className="text-4xl font-extrabold mb-4 text-neutral-900 text-center tracking-wide">
-            Tentang Website Ini
+            Tentang SADANTENpedia
           </h1>
 
           <p className="text-lg text-neutral-700 leading-relaxed text-justify">
-            Website ini dibuat untuk memperkenalkan budaya Indonesia dan
+            SADANTENpedia merupakan platform yang dirancang untuk meningkatkan
+            literasi budaya serta menyediakan ruang ekspresi kebudayaan yang
+            mengangkat berbagai adat, tradisi, kesenian, kuliner lokal dan
+            warisan daerah Provinsi Banten melalui pendekatan edukatif dan
+            komunikatif.
+            {/* Website ini dibuat untuk memperkenalkan budaya Indonesia dan
             memberikan informasi terkait berbagai adat, tradisi, dan warisan
             budaya dari seluruh daerah. Platform ini dirancang sebagai ruang
             edukatif yang modern, menarik, dan mudah dipahami agar generasi muda
-            semakin mencintai dan melestarikan budaya Indonesia.
+            semakin mencintai dan melestarikan budaya Indonesia. */}
           </p>
         </div>
       </section>
