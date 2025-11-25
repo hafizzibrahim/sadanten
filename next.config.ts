@@ -30,26 +30,27 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        // 🎯 TARGET: Aset statis yang di-cache Next.js, Anda mungkin tidak perlu menyentuh ini
+        // 1. ASET STATIS: Cache Panjang & Immutable (AMAN, Next.js menangani cache busting)
         source: '/_next/static/(.*)',
         headers: [
           {
             key: 'Cache-Control',
-            // Default Vercel/Next.js sudah baik: 1 tahun untuk berkas ber-hash
+            // Cache 1 tahun, hanya berubah jika nama file (hash) berubah saat deploy
             value: 'public, max-age=31536000, immutable', 
           },
         ],
       },
       {
-        // 🎯 TARGET: Semua rute halaman/API lainnya (termasuk '/')
-        source: '/:path((?!_next|static).*)', // Mencocokkan semua rute kecuali aset Next.js
+        // 2. RUTE DINAMIS/HALAMAN: Tidak ada Cache (Tujuan Anda)
+        source: '/:path((?!_next|static).*)', 
         headers: [
           {
             key: 'Cache-Control',
-            // Contoh: Server/CDN Cache selama 10 menit (s-maxage=600), revalidate jika ada permintaan baru
-            value: 's-maxage=600, stale-while-revalidate=59', 
+            // max-age=0: Tidak ada cache di browser
+            // s-maxage=0: Tidak ada cache di Vercel CDN (atau 1 detik untuk revalidate yang sangat cepat)
+            // must-revalidate: Memastikan browser HARUS memverifikasi ke server
+            value: 'max-age=0, s-maxage=1, must-revalidate', 
           },
-          // Header yang sudah Anda miliki:
           {
             key: 'X-Content-Type-Options',
             value: 'nosniff',
@@ -57,13 +58,13 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        // 3. MANIFEST: Juga harus selalu diperbarui
         source: '/manifest.json',
         headers: [
           {
             key: 'Content-Type',
             value: 'application/manifest+json',
           },
-          // Pastikan manifest.json segera diperbarui (cache pendek)
           {
             key: 'Cache-Control',
             value: 'public, max-age=0, must-revalidate', 
