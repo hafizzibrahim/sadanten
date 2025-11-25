@@ -1,4 +1,4 @@
-import { Ensiklopedia } from "@/models/Ensiklopedia";
+import { Ensiklopedia } from "../../models/Ensiklopedia";
 import CultureCard from "../common/CultureCard";
 
 interface LocationSectionProps {
