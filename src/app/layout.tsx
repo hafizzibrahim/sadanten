@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   icons: {
     icon: '/logo-sadanten.ico',
-    apple: '/apple-touch-icon.png',
+    apple: '/logo.png',
   },
 };
 

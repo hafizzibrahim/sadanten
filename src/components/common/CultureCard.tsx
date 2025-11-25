@@ -20,7 +20,7 @@ const CultureCard = ({ culture }: CultureCardProps) => {
 
   return (
     <Link href={`/budaya/detail?id=${culture.id}`}>
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer">
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer flex flex-col h-full">
         {/* Image */}
         <div className="relative h-48 bg-gradient-to-br from-red-900 to-red-700 overflow-hidden">
           {culture.photo ? (
@@ -41,13 +41,13 @@ const CultureCard = ({ culture }: CultureCardProps) => {
           )}
         </div>
 
-        {/* Content */}
-        <div className="p-6">
-          <h3 className="text-xl font-bold text-gray-800 mb-1">
+        {/* Content - Gunakan flex-grow untuk membuat tinggi seragam */}
+        <div className="p-6 flex-grow flex flex-col">
+          <h3 className="text-xl font-bold text-gray-800 mb-1 line-clamp-2">
             {culture.name}
           </h3>
           <p className="text-sm text-red-700 font-medium mb-3">{culture.category}</p>
-          <p className="text-gray-600 text-sm leading-relaxed line-clamp-4">
+          <p className="text-gray-600 text-sm leading-relaxed flex-grow line-clamp-4">
             {culture.description}
           </p>
         </div>
