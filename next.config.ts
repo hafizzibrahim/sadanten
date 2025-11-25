@@ -5,7 +5,6 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: '10mb',
     },
-    // Nonaktifkan Turbopack dan gunakan webpack
   },
   images: {
     remotePatterns: [
@@ -101,32 +100,8 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  webpack: (config, { dev, isServer }) => {
-    if (!dev) {
-      // Tambahkan versi ke nama file untuk production
-      config.output.filename = (pathData: { chunk?: { name?: string } }) => {
-        return pathData.chunk?.name === 'main'
-          ? 'static/js/[name].[contenthash:8].js'
-          : 'static/js/[name].[contenthash:8].js';
-      };
-
-      // Jika Anda ingin semua file JS memiliki cache busting hash
-      if (config.optimization && config.optimization.splitChunks) {
-        // Pastikan vendor dan runtime chunk juga memiliki hash
-        config.optimization.splitChunks.cacheGroups = {
-          ...config.optimization.splitChunks.cacheGroups,
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-            // Tambahkan hash ke nama vendor bundle
-            filename: 'static/js/[name].[contenthash:8].js',
-          },
-        };
-      }
-    }
-    return config;
-  }
+  // Konfigurasi webpack dihapus karena tidak kompatibel dengan Turbopack
+  // Tetapi cache busting masih akan bekerja dengan metode lain
 };
 
 export default nextConfig;
