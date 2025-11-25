@@ -1,5 +1,13 @@
 import axios from "axios";
 
+// Fungsi helper untuk menambahkan cache buster ke parameter permintaan
+const addCacheBuster = (params: any = {}) => {
+  return {
+    ...params,
+    _t: Date.now() // Menambahkan timestamp untuk cache busting
+  };
+};
+
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
@@ -10,13 +18,8 @@ const api = axios.create({
 // ✅ TAMBAHKAN REQUEST INTERCEPTOR
 api.interceptors.request.use(
   (config) => {
-    // Menambahkan cache busting parameter untuk permintaan GET
-    if (config.method?.toLowerCase() === 'get') {
-      config.params = {
-        ...config.params,
-        _t: Date.now() // Menambahkan timestamp untuk cache busting
-      };
-    }
+    // Menambahkan cache busting parameter untuk semua permintaan (tidak hanya GET)
+    config.params = addCacheBuster(config.params);
 
     // Jika data adalah FormData, hapus Content-Type
     // Biar browser yang set otomatis dengan boundary

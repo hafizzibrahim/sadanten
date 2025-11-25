@@ -1,21 +1,28 @@
 import Link from 'next/link';
 import { Ensiklopedia } from '../../models/Ensiklopedia';
+import { addCacheBusterToUrl } from '../../utils/cacheBuster';
 
 interface CultureCardProps {
   culture: Ensiklopedia;
 }
 
 const CultureCard = ({ culture }: CultureCardProps) => {
-  // Fungsi untuk mendapatkan URL foto yang benar
+  // Fungsi untuk mendapatkan URL foto yang benar dengan cache buster
   const getPhotoUrl = (photo: string) => {
     if (!photo) return "/placeholder-image.jpg"; // fallback image
 
+    let photoUrl: string;
     // Jika URL sudah lengkap, kembalikan langsung
-    if (photo.startsWith("http")) return photo;
+    if (photo.startsWith("http")) {
+      photoUrl = photo;
+    } else {
+      // Jika URL adalah path relatif, tambahkan ke base URL
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://besadanten-production.up.railway.app/api";
+      photoUrl = `${baseUrl}${photo.startsWith('/') ? photo : '/' + photo}`;
+    }
 
-    // Jika URL adalah path relatif, tambahkan ke base URL
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://besadanten-production.up.railway.app/api";
-    return `${baseUrl}${photo.startsWith('/') ? photo : '/' + photo}`;
+    // Tambahkan cache buster ke URL foto
+    return addCacheBusterToUrl(photoUrl);
   };
 
   return (

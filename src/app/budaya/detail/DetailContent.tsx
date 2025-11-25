@@ -10,9 +10,10 @@ import Navbar from "../../../components/layout/Navbar";
 import Footer from "../../../components/layout/Footer";
 import HomeService from "../../../services/HomeService";
 import { Ensiklopedia } from "../../../models/Ensiklopedia";
+import { addCacheBusterToUrl } from "../../../utils/cacheBuster";
 
 // Ubah nama function dari BudayaDetailPage menjadi DetailContent
-export default function DetailContent() { 
+export default function DetailContent() {
   const searchParams = useSearchParams(); // ⬅️ Hook yang bermasalah ada di sini
   const id = searchParams.get("id");
   const [culture, setCulture] = useState<Ensiklopedia | null>(null);
@@ -44,24 +45,36 @@ export default function DetailContent() {
     fetchCultureDetail();
   }, [id]);
 
-  // Fungsi untuk mendapatkan URL foto yang benar
+  // Fungsi untuk mendapatkan URL foto yang benar dengan cache buster
   const getPhotoUrl = (photo: string) => {
     if (!photo) return "/placeholder-image.jpg"; // fallback image
-    if (photo.startsWith("http")) return photo;
-    const baseUrl =
-      process.env.NEXT_PUBLIC_API_URL ||
-      "https://besadanten-production.up.railway.app/api";
-    return `${baseUrl}${photo.startsWith("/") ? photo : "/" + photo}`;
+    let photoUrl: string;
+    if (photo.startsWith("http")) {
+      photoUrl = photo;
+    } else {
+      const baseUrl =
+        process.env.NEXT_PUBLIC_API_URL ||
+        "https://besadanten-production.up.railway.app/api";
+      photoUrl = `${baseUrl}${photo.startsWith("/") ? photo : "/" + photo}`;
+    }
+    // Tambahkan cache buster ke URL foto
+    return addCacheBusterToUrl(photoUrl);
   };
 
-  // Fungsi untuk mendapatkan URL audio yang benar
+  // Fungsi untuk mendapatkan URL audio yang benar dengan cache buster
   const getAudioUrl = (audio: string) => {
     if (!audio) return null;
-    if (audio.startsWith("http")) return audio;
-    const baseUrl =
-      process.env.NEXT_PUBLIC_API_URL ||
-      "https://besadanten-production.up.railway.app/api";
-    return `${baseUrl}${audio.startsWith("/") ? audio : "/" + audio}`;
+    let audioUrl: string;
+    if (audio.startsWith("http")) {
+      audioUrl = audio;
+    } else {
+      const baseUrl =
+        process.env.NEXT_PUBLIC_API_URL ||
+        "https://besadanten-production.up.railway.app/api";
+      audioUrl = `${baseUrl}${audio.startsWith("/") ? audio : "/" + audio}`;
+    }
+    // Tambahkan cache buster ke URL audio
+    return addCacheBusterToUrl(audioUrl);
   };
 
   // KONDISI LOADING (Disarankan: tampilkan spinner saja karena Suspense yang atur layout)
@@ -112,7 +125,7 @@ export default function DetailContent() {
         <Navbar />
       </div>
 
-      <main className="flex-grow py-20 px-4 relative"> 
+      <main className="flex-grow py-20 px-4 relative">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-5">
           <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-lg space-y-4">
             {/* ... (Konten detail LEFT CONTENT) ... */}

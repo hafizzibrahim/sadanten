@@ -79,7 +79,8 @@ export default function HomePage() {
       // Panggil API dengan parameter pencarian berdasarkan name
       try {
         const response = await api.get(
-          `/ensiklopedia?name=${encodeURIComponent(query)}`
+          `/ensiklopedia`,
+          { params: { name: query } } // Gunakan params untuk penulisan yang lebih jelas
         );
 
         setCultures(response.data.data);

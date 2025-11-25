@@ -30,18 +30,28 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        // 1. ASET STATIS: Cache Panjang & Immutable (AMAN, Next.js menangani cache busting)
-        source: '/_next/static/(.*)',
+        // 1. ASET STATIS: Modifikasi cache untuk file JS/CSS agar tidak terlalu lama di-cache (untuk masalah redeploy)
+        source: '/_next/static/chunks/(.*)',
         headers: [
           {
             key: 'Cache-Control',
-            // Cache 1 tahun, hanya berubah jika nama file (hash) berubah saat deploy
-            value: 'public, max-age=31536000, immutable',
+            // Lebih pendek dari sebelumnya, agar update UI lebih cepat terlihat
+            value: 'public, max-age=31536000, must-revalidate',
           },
         ],
       },
       {
-        // 2. RUTE DINAMIS/HALAMAN: Tidak ada Cache (Tujuan Anda)
+        // 2. ASET STILASI: Untuk file JS utama dan CSS
+        source: '/_next/static/css/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, must-revalidate',
+          },
+        ],
+      },
+      {
+        // 3. RUTE DINAMIS/HALAMAN: Tidak ada Cache (Tujuan Anda)
         source: '/:path((?!_next|static).*)',
         headers: [
           {
@@ -67,7 +77,7 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // 3. MANIFEST: Juga harus selalu diperbarui
+        // 4. MANIFEST: Juga harus selalu diperbarui
         source: '/manifest.json',
         headers: [
           {
@@ -81,7 +91,7 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // 4. Tambahkan header untuk API routes (jika diperlukan)
+        // 5. Tambahkan header untuk API routes (jika diperlukan)
         source: '/api/(.*)',
         headers: [
           {
