@@ -1,6 +1,6 @@
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
-import BackgroundDecorations from "@/src/components/home/BackgroundDecorations";
+import BackgroundDecorations from "../../components/home/BackgroundDecorations";
 
 export default function AboutLayout({
   children,
@@ -9,11 +9,13 @@ export default function AboutLayout({
 }) {
   return (
     <div className="min-h-screen bg-gray-50 relative flex flex-col">
-      <BackgroundDecorations />{" "}
+      <BackgroundDecorations />
       <div className="sticky top-0 z-50">
-<Navbar />
+        <Navbar />
       </div>
-      <div className="flex-grow">{children} </div>
+      <div className="flex-grow py-20">
+        {children}
+      </div>
       <Footer />
     </div>
   );

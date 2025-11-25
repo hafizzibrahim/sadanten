@@ -139,17 +139,7 @@ const Navbar = () => {
                 "Home"
               )}`}
             >
-              Home
-            </Link>
-
-            <Link
-              href="/about"
-              onClick={() => handleLinkClick("About")}
-              className={`block px-3 py-2 rounded-md text-base font-medium ${linkClass(
-                "About"
-              )}`}
-            >
-              About
+              Beranda
             </Link>
 
             <Link
@@ -159,7 +149,17 @@ const Navbar = () => {
                 "Partisipasi"
               )}`}
             >
-              Partisipasi
+              Partisipasi Kebudayaan
+            </Link>
+
+            <Link
+              href="/about"
+              onClick={() => handleLinkClick("About")}
+              className={`block px-3 py-2 rounded-md text-base font-medium ${linkClass(
+                "About"
+              )}`}
+            >
+              Tentang
             </Link>
           </div>
         </div>

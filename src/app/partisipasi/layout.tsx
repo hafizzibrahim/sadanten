@@ -12,11 +12,13 @@ export default function ParticipationLayout({
       <BackgroundDecorations />
 
       <div className="sticky top-0 z-50">
-                <Navbar />     {" "}
+        <Navbar />
       </div>
 
       {/* Add spacing for navbar */}
-      <div className="flex-grow pt-20">        {children}      </div>
+      <div className="flex-grow py-20">
+        {children}
+      </div>
 
       <Footer />
     </div>
