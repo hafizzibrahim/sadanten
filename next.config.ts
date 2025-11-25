@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: '10mb',
     },
+    // Nonaktifkan Turbopack dan gunakan webpack
   },
   images: {
     remotePatterns: [
