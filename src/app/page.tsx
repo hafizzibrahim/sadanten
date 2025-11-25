@@ -12,6 +12,9 @@ import { Ensiklopedia } from "../models/Ensiklopedia";
 import api from "../data/api";
 import BackgroundDecorations from "../components/home/BackgroundDecorations";
 
+// Versi aplikasi - perbarui setiap kali Anda membuat perubahan besar
+const APP_VERSION = "v1.1.0";
+
 export default function HomePage() {
   const [cultures, setCultures] = useState<Ensiklopedia[]>([]);
   const [allCultures, setAllCultures] = useState<Ensiklopedia[]>([]);
@@ -20,6 +23,22 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Cek versi aplikasi dan bersihkan cache jika perlu
+    const lastVisitedVersion = localStorage.getItem('lastVisitedVersion');
+
+    // Jika versi berbeda, bersihkan cache lokal
+    if (lastVisitedVersion && lastVisitedVersion !== APP_VERSION) {
+      // Bersihkan data cache lokal
+      localStorage.removeItem('lastVisitedVersion');
+      console.log('Versi aplikasi berubah, cache lokal telah dibersihkan');
+
+      // Opsional: refresh halaman untuk mendapatkan versi terbaru
+      // window.location.reload();
+    }
+
+    // Simpan versi saat ini
+    localStorage.setItem('lastVisitedVersion', APP_VERSION);
+
     const fetchCultures = async () => {
       try {
         const allData = await HomeService.getAllEnsiklopedia();

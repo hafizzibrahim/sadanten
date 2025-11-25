@@ -10,6 +10,14 @@ const api = axios.create({
 // ✅ TAMBAHKAN REQUEST INTERCEPTOR
 api.interceptors.request.use(
   (config) => {
+    // Menambahkan cache busting parameter untuk permintaan GET
+    if (config.method?.toLowerCase() === 'get') {
+      config.params = {
+        ...config.params,
+        _t: Date.now() // Menambahkan timestamp untuk cache busting
+      };
+    }
+
     // Jika data adalah FormData, hapus Content-Type
     // Biar browser yang set otomatis dengan boundary
     if (config.data instanceof FormData) {
@@ -17,7 +25,7 @@ api.interceptors.request.use(
       console.log('🔧 Detected FormData - Removed Content-Type header');
       console.log('Request headers:', config.headers);
     }
-    
+
     return config;
   },
   (error) => {

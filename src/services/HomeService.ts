@@ -21,7 +21,11 @@ export interface LocationEnsiklopedia {
 class HomeService {
   async getRandomEnsiklopedia(limit: number = 6): Promise<Ensiklopedia[]> {
     try {
-      const response = await api.get<ApiResponse<Ensiklopedia[]>>("/ensiklopedia");
+      // Tambahkan timestamp untuk cache busting
+      const timestamp = Date.now();
+      const response = await api.get<ApiResponse<Ensiklopedia[]>>("/ensiklopedia", {
+        params: { _t: timestamp } // Cache busting parameter
+      });
       const allData = response.data.data;
 
       // Acak data dan ambil sejumlah limit
@@ -35,7 +39,11 @@ class HomeService {
 
   async getAllEnsiklopedia(): Promise<Ensiklopedia[]> {
     try {
-      const response = await api.get<ApiResponse<Ensiklopedia[]>>("/ensiklopedia");
+      // Tambahkan timestamp untuk cache busting
+      const timestamp = Date.now();
+      const response = await api.get<ApiResponse<Ensiklopedia[]>>("/ensiklopedia", {
+        params: { _t: timestamp } // Cache busting parameter
+      });
       return response.data.data;
     } catch (error) {
       console.error("Error fetching all ensiklopedia:", error);
@@ -45,7 +53,11 @@ class HomeService {
 
   async getEnsiklopediaById(id: string): Promise<Ensiklopedia> {
     try {
-      const response = await api.get<ApiResponse<Ensiklopedia>>(`/ensiklopedia/${id}`);
+      // Tambahkan timestamp untuk cache busting
+      const timestamp = Date.now();
+      const response = await api.get<ApiResponse<Ensiklopedia>>(`/ensiklopedia/${id}`, {
+        params: { _t: timestamp } // Cache busting parameter
+      });
       return response.data.data;
     } catch (error) {
       console.error("Error fetching ensiklopedia by id:", error);

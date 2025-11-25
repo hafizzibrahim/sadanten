@@ -36,24 +36,33 @@ const nextConfig: NextConfig = {
           {
             key: 'Cache-Control',
             // Cache 1 tahun, hanya berubah jika nama file (hash) berubah saat deploy
-            value: 'public, max-age=31536000, immutable', 
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },
       {
         // 2. RUTE DINAMIS/HALAMAN: Tidak ada Cache (Tujuan Anda)
-        source: '/:path((?!_next|static).*)', 
+        source: '/:path((?!_next|static).*)',
         headers: [
           {
             key: 'Cache-Control',
             // max-age=0: Tidak ada cache di browser
             // s-maxage=0: Tidak ada cache di Vercel CDN (atau 1 detik untuk revalidate yang sangat cepat)
             // must-revalidate: Memastikan browser HARUS memverifikasi ke server
-            value: 'max-age=0, s-maxage=1, must-revalidate', 
+            value: 'max-age=0, s-maxage=1, must-revalidate',
           },
           {
             key: 'X-Content-Type-Options',
             value: 'nosniff',
+          },
+          // Tambahkan header tambahan untuk pencegahan cache
+          {
+            key: 'Pragma',
+            value: 'no-cache',
+          },
+          {
+            key: 'Expires',
+            value: '0',
           },
         ],
       },
@@ -67,12 +76,56 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Cache-Control',
-            value: 'public, max-age=0, must-revalidate', 
+            value: 'public, max-age=0, must-revalidate',
+          },
+        ],
+      },
+      {
+        // 4. Tambahkan header untuk API routes (jika diperlukan)
+        source: '/api/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-cache, no-store, must-revalidate',
+          },
+          {
+            key: 'Pragma',
+            value: 'no-cache',
+          },
+          {
+            key: 'Expires',
+            value: '0',
           },
         ],
       },
     ];
   },
+  webpack: (config, { dev, isServer }) => {
+    if (!dev) {
+      // Tambahkan versi ke nama file untuk production
+      config.output.filename = (pathData: { chunk?: { name?: string } }) => {
+        return pathData.chunk?.name === 'main'
+          ? 'static/js/[name].[contenthash:8].js'
+          : 'static/js/[name].[contenthash:8].js';
+      };
+
+      // Jika Anda ingin semua file JS memiliki cache busting hash
+      if (config.optimization && config.optimization.splitChunks) {
+        // Pastikan vendor dan runtime chunk juga memiliki hash
+        config.optimization.splitChunks.cacheGroups = {
+          ...config.optimization.splitChunks.cacheGroups,
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            // Tambahkan hash ke nama vendor bundle
+            filename: 'static/js/[name].[contenthash:8].js',
+          },
+        };
+      }
+    }
+    return config;
+  }
 };
 
 export default nextConfig;
