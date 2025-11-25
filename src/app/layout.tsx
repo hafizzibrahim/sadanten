@@ -43,13 +43,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#F5F5F5] relative overflow-x-hidden`}
       >
-        {/* Register Service Worker */}
+        {/* Register Service Worker dengan cache buster */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
               if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js')
+                  // Tambahkan cache buster ke URL service worker
+                  const cacheBuster = '?v=' + Date.now();
+                  navigator.serviceWorker.register('/sw.js' + cacheBuster)
                     .then(function(registration) {
                       console.log('SW registered: ', registration);
                     })

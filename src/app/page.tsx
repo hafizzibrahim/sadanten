@@ -13,7 +13,7 @@ import api from "../data/api";
 import BackgroundDecorations from "../components/home/BackgroundDecorations";
 
 // Versi aplikasi - perbarui setiap kali Anda membuat perubahan besar
-const APP_VERSION = "v1.1.0";
+const APP_VERSION = "v1.2.0";
 
 export default function HomePage() {
   const [cultures, setCultures] = useState<Ensiklopedia[]>([]);
@@ -26,14 +26,23 @@ export default function HomePage() {
     // Cek versi aplikasi dan bersihkan cache jika perlu
     const lastVisitedVersion = localStorage.getItem('lastVisitedVersion');
 
-    // Jika versi berbeda, bersihkan cache lokal
+    // Jika versi berbeda, bersihkan cache lokal dan service worker
     if (lastVisitedVersion && lastVisitedVersion !== APP_VERSION) {
       // Bersihkan data cache lokal
       localStorage.removeItem('lastVisitedVersion');
       console.log('Versi aplikasi berubah, cache lokal telah dibersihkan');
 
-      // Opsional: refresh halaman untuk mendapatkan versi terbaru
-      // window.location.reload();
+      // Hapus service worker lama agar dapat digantikan dengan yang baru
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for(let registration of registrations) {
+            registration.unregister();
+          }
+        });
+      }
+
+      // Refresh halaman untuk mendapatkan versi terbaru
+      window.location.reload();
     }
 
     // Simpan versi saat ini

@@ -30,28 +30,37 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        // 1. ASET STATIS: Modifikasi cache untuk file JS/CSS agar tidak terlalu lama di-cache (untuk masalah redeploy)
-        source: '/_next/static/chunks/(.*)',
+        // 1. ASET JS/CSS: Kurangi masa cache dan tambahkan must-revalidate
+        source: '/_next/static/(css|js|chunks)/(.*).js',
         headers: [
           {
             key: 'Cache-Control',
-            // Lebih pendek dari sebelumnya, agar update UI lebih cepat terlihat
-            value: 'public, max-age=31536000, must-revalidate',
+            value: 'public, max-age=3600, must-revalidate', // Hanya cache 1 jam, lalu harus revalidate
           },
         ],
       },
       {
-        // 2. ASET STILASI: Untuk file JS utama dan CSS
-        source: '/_next/static/css/(.*)',
+        // 2. ASET CSS: Kurangi masa cache dan tambahkan must-revalidate
+        source: '/_next/static/(css|js|chunks)/(.*).css',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, must-revalidate',
+            value: 'public, max-age=3600, must-revalidate', // Hanya cache 1 jam, lalu harus revalidate
           },
         ],
       },
       {
-        // 3. RUTE DINAMIS/HALAMAN: Tidak ada Cache (Tujuan Anda)
+        // 3. ASET LAINNYA: Untuk file lain di static, bisa tetap cache lama
+        source: '/_next/static/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        // 4. RUTE DINAMIS/HALAMAN: Tidak ada Cache (Tujuan Anda)
         source: '/:path((?!_next|static).*)',
         headers: [
           {
@@ -77,7 +86,7 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // 4. MANIFEST: Juga harus selalu diperbarui
+        // 5. MANIFEST: Juga harus selalu diperbarui
         source: '/manifest.json',
         headers: [
           {
@@ -91,7 +100,7 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // 5. Tambahkan header untuk API routes (jika diperlukan)
+        // 6. Tambahkan header untuk API routes (jika diperlukan)
         source: '/api/(.*)',
         headers: [
           {
