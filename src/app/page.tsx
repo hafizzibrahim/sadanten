@@ -53,9 +53,9 @@ export default function HomePage() {
         const allData = await HomeService.getAllEnsiklopedia();
         setAllCultures(allData);
 
-        // Ambil 6 data acak untuk ditampilkan di home
-        const randomData = await HomeService.getRandomEnsiklopedia(6);
-        setCultures(randomData);
+        // Ambil semua data dan urutkan berdasarkan abjad, lalu ambil 6 pertama untuk ditampilkan di home
+        const sortedData = [...allData].sort((a, b) => a.name.localeCompare(b.name)).slice(0, 6);
+        setCultures(sortedData);
 
         // Ambil data budaya berdasarkan lokasi (4 per lokasi)
         const locationData = await HomeService.getTopCulturesByLocations(4);
@@ -78,12 +78,9 @@ export default function HomePage() {
     setSearchQuery(query);
 
     if (query.trim() === "") {
-      // Kembalikan ke 6 data acak ketika search kosong
-      const randomData = [...allCultures]
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 6);
-
-      setCultures(randomData);
+      // Kembalikan ke 6 budaya pertama yang telah diurutkan sesuai abjad ketika search kosong
+      const sortedCultures = [...allCultures].sort((a, b) => a.name.localeCompare(b.name)).slice(0, 6);
+      setCultures(sortedCultures);
     } else {
       // Panggil API dengan parameter pencarian berdasarkan name
       try {
@@ -92,7 +89,9 @@ export default function HomePage() {
           { params: { name: query } } // Gunakan params untuk penulisan yang lebih jelas
         );
 
-        setCultures(response.data.data);
+        // Urutkan hasil pencarian sesuai abjad
+        const sortedResults = [...response.data.data].sort((a, b) => a.name.localeCompare(b.name));
+        setCultures(sortedResults);
       } catch (error) {
         console.error("Error searching cultures:", error);
 
@@ -101,7 +100,9 @@ export default function HomePage() {
           culture.name.toLowerCase().includes(query.toLowerCase())
         );
 
-        setCultures(filtered);
+        // Urutkan hasil filter sesuai abjad
+        const sortedFiltered = [...filtered].sort((a, b) => a.name.localeCompare(b.name));
+        setCultures(sortedFiltered);
       }
     }
   };

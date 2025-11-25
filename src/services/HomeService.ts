@@ -83,7 +83,9 @@ class HomeService {
       const result: LocationEnsiklopedia[] = [];
 
       BANTEN_LOCATIONS.forEach(location => {
-        const locationCultures = grouped[location.name] || [];
+        let locationCultures = grouped[location.name] || [];
+        // Urutkan budaya dalam setiap lokasi berdasarkan abjad
+        locationCultures = locationCultures.sort((a, b) => a.name.localeCompare(b.name));
         result.push({
           location: location.name,
           locationInfo: location,
@@ -103,6 +105,8 @@ class HomeService {
       const locationCultures = await this.getEnsiklopediaByLocation();
 
       // Ambil hanya sejumlah limit budaya untuk setiap lokasi
+      // Karena budaya sudah diurutkan di getEnsiklopediaByLocation(),
+      // maka yang diambil adalah 4 budaya pertama (yang sudah sesuai abjad)
       return locationCultures.map(locationData => ({
         ...locationData,
         cultures: locationData.cultures.slice(0, limit)
